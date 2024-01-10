@@ -13,3 +13,16 @@ Each task is composed of :
  - If the task is completed or no.
  - When completed, a date of completion.
  - A date of deadline
+
+ ***
+
+ ## To Do List :
+ | **Task** | **Status** |
+ | :------: | :--------: |
+ | Make a class for each task | Not started |
+ | Make a method to create a new task | Not started |
+ | Make a method to display the different tasks | Not started |
+ | Make a method to change the status of a task | Not started |
+ | Learn to make a visual interface | Not started |
+ | Make a fuction to save the todo in a file | Not started |
+ | Make a fuction to load a todo from a file | Not started |
