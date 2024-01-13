@@ -19,8 +19,8 @@ Each task is composed of :
  ## To Do List :
  | **Task** | **Status** |
  | :------: | :--------: |
- | Make a class for each task | To be tested |
- | Make a method to create a new task | Not started |
+ | Make a class for each task | Done |
+ | Make a method to create a new task | Done |
  | Make a method to display the different tasks | Not started |
  | Make a method to change the status of a task | Not started |
  | Learn to make a visual interface | Not started |
