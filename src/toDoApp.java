@@ -6,19 +6,31 @@ public class toDoApp {
 	public static void main(String[] args) {
 		List<Task> list_of_tasks = new ArrayList<Task>();
 		list_of_tasks.add(createTask());
+		displayTasks(list_of_tasks);
+	}
 
-		System.out.println("Titre de la tâche :");
-		System.out.println(list_of_tasks.get(0).title);
-		System.out.println("Description de la tâche :");
-		System.out.println(list_of_tasks.get(0).description);
-		System.out.println("Date de création de la tâche :");
-		System.out.println(list_of_tasks.get(0).creation_date.toString());
-		System.out.println("La tâche est-elle completée :");
-		System.out.println(list_of_tasks.get(0).completed);
-		System.out.println("Date de complétion de la tâche :");
-		System.out.println(list_of_tasks.get(0).completion_date.toString());
-		System.out.println("Deadline de la tâche :");
-		System.out.println(list_of_tasks.get(0).deadline_date.toString());
+	public static void displayTasks(List<Task> list_of_tasks){
+		int list_length = list_of_tasks.size();
+		for (int i = 0; i<list_length ; i++) {
+			String completion_checker = " ";
+			String completion_date = "";
+			if (list_of_tasks.get(i).completed){
+				completion_checker = "x";
+				completion_date = " the " + list_of_tasks.get(i).completion_date.toString();
+			}
+			System.out.println("#####################################################");
+			System.out.print("Title :");
+			System.out.print(list_of_tasks.get(i).title);
+			System.out.print("                     Creation :");
+			System.out.println(list_of_tasks.get(i).creation_date.toString());
+			System.out.print("Description:");
+			System.out.print(list_of_tasks.get(i).description);
+			System.out.println("    Completed : ["+completion_checker+"]"+completion_date);
+			System.out.print("Deadline :");
+			System.out.println(list_of_tasks.get(i).deadline_date.toString());
+			System.out.println("#####################################################");
+			System.out.println("");
+		}
 	}
 
 	public static Task createTask() {
