@@ -4,20 +4,21 @@ import java.util.*;
 
 public class toDoApp {
 	public static void main(String[] args) {
+		Scanner ask_user = new Scanner(System.in);
 		Boolean end_program = false;
 		String choice_menu = "";
 		List<Task> list_of_tasks = new ArrayList<Task>();
 		while (!end_program){
-			choice_menu = displayMenu();
+			choice_menu = displayMenu(ask_user);
 			switch(choice_menu){
 				case "1" :
-					list_of_tasks.add(createTask());
+					list_of_tasks.add(createTask(ask_user));
 					break;
 				case "2" :
 					displayTasks(list_of_tasks);
 					break;
 				case "3" :
-					completeTask(list_of_tasks);
+					completeTask(list_of_tasks, ask_user);
 					break;
 				case "4" :
 					end_program = true;
@@ -27,10 +28,10 @@ public class toDoApp {
 					break;
 			}
 		}
+		ask_user.close();
 	}
 
-	public static String displayMenu(){
-		Scanner ask_user = new Scanner(System.in);
+	public static String displayMenu(Scanner ask_user){
 		System.out.println("#############################################################################");
 		System.out.println("What do you wish to do ?");
 		System.out.println("#############################################################################");
@@ -42,13 +43,12 @@ public class toDoApp {
 		return ask_user.nextLine();
 	}
 
-	public static void completeTask(List<Task> list_of_tasks){
-		Scanner ask_user = new Scanner(System.in);
+	public static void completeTask(List<Task> list_of_tasks, Scanner ask_user){
 		System.out.println("Which task do you wish to complete ?");
 		int number_entered = ask_user.nextInt();
 		int task_number = number_entered-1;
 		list_of_tasks.get(task_number).completed = true;
-		list_of_tasks.get(task_number).completion_date = LocalDateTime.now();		
+		list_of_tasks.get(task_number).completion_date = LocalDateTime.now();
 	}
 
 	public static void displayTasks(List<Task> list_of_tasks){
@@ -92,8 +92,7 @@ public class toDoApp {
 		}
 	}
 
-	public static Task createTask() {
-		Scanner ask_user = new Scanner(System.in);
+	public static Task createTask(Scanner ask_user) {
 		System.out.println("What's the name of your task ?");
 		String title = ask_user.nextLine();
 		System.out.println("What's the description of your task ?");
