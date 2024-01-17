@@ -23,7 +23,7 @@ Each task is composed of :
  | Make a method to create a new task | Done |
  | Make a method to display the different tasks | Done |
  | Make a method to change the status of a task | Done |
- | Make a method to display a menu in terminal | Not started |
+ | Make a method to display a menu in terminal | Done |
  | Learn to make a visual interface | Not started |
  | Make a fuction to save the todo in a file | Not started |
  | Make a fuction to load a todo from a file | Not started |

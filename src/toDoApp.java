@@ -4,10 +4,42 @@ import java.util.*;
 
 public class toDoApp {
 	public static void main(String[] args) {
+		Boolean end_program = false;
+		String choice_menu = "";
 		List<Task> list_of_tasks = new ArrayList<Task>();
-		list_of_tasks.add(createTask());
-		completeTask(list_of_tasks);
-		displayTasks(list_of_tasks);
+		while (!end_program){
+			choice_menu = displayMenu();
+			switch(choice_menu){
+				case "1" :
+					list_of_tasks.add(createTask());
+					break;
+				case "2" :
+					displayTasks(list_of_tasks);
+					break;
+				case "3" :
+					completeTask(list_of_tasks);
+					break;
+				case "4" :
+					end_program = true;
+					break;
+				default :
+					System.out.println("Invalid input (write a number between 1 and 4)");
+					break;
+			}
+		}
+	}
+
+	public static String displayMenu(){
+		Scanner ask_user = new Scanner(System.in);
+		System.out.println("#############################################################################");
+		System.out.println("What do you wish to do ?");
+		System.out.println("#############################################################################");
+		System.out.println("1. Create new task");
+		System.out.println("2. Display tasks");
+		System.out.println("3. Complete task");
+		System.out.println("4. Quit");
+		System.out.println("#############################################################################");
+		return ask_user.nextLine();
 	}
 
 	public static void completeTask(List<Task> list_of_tasks){
@@ -29,14 +61,14 @@ public class toDoApp {
 			String creation_date_day = String.format("%02d",list_of_tasks.get(i).creation_date.getDayOfMonth());
 			String creation_date_month = String.format("%02d",list_of_tasks.get(i).creation_date.getMonthValue());
 			String creation_date_year = String.valueOf(list_of_tasks.get(i).creation_date.getYear());
-			String creation_date_hour = String.valueOf(list_of_tasks.get(i).creation_date.getHour());
-			String creation_date_minute = String.valueOf(list_of_tasks.get(i).creation_date.getMinute());
+			String creation_date_hour = String.format("%02d",list_of_tasks.get(i).creation_date.getHour());
+			String creation_date_minute = String.format("%02d",list_of_tasks.get(i).creation_date.getMinute());
 
 			String completion_date_day = String.format("%02d",list_of_tasks.get(i).completion_date.getDayOfMonth());
 			String completion_date_month = String.format("%02d",list_of_tasks.get(i).completion_date.getMonthValue());
 			String completion_date_year = String.valueOf(list_of_tasks.get(i).completion_date.getYear());
-			String completion_date_hour = String.valueOf(list_of_tasks.get(i).completion_date.getHour());
-			String completion_date_minute = String.valueOf(list_of_tasks.get(i).completion_date.getMinute());
+			String completion_date_hour = String.format("%02d",list_of_tasks.get(i).completion_date.getHour());
+			String completion_date_minute = String.format("%02d",list_of_tasks.get(i).completion_date.getMinute());
 
 			String deadline_date_day = String.format("%02d",list_of_tasks.get(i).deadline_date.getDayOfMonth());
 			String deadline_date_month = String.format("%02d",list_of_tasks.get(i).deadline_date.getMonthValue());
@@ -46,7 +78,7 @@ public class toDoApp {
 				completion_checker = "x";
 				completion_date = " the " + completion_date_day +"/"+ completion_date_month +"/"+ completion_date_year +" "+ completion_date_hour +":"+ completion_date_minute;
 			}
-			System.out.println("#################################################################################");
+			System.out.println("#############################################################################");
 			System.out.print(task_number + ". Title : ");
 			System.out.print(list_of_tasks.get(i).title);
 			System.out.println("                     Creation : " + creation_date_day +"/"+ creation_date_month +"/"+ creation_date_year +" "+ creation_date_hour +":"+ creation_date_minute);
@@ -55,7 +87,7 @@ public class toDoApp {
 			System.out.println("    Completed : ["+completion_checker+"]"+completion_date);
 			System.out.print("Deadline : ");
 			System.out.println(deadline_date_day +"/"+ deadline_date_month +"/"+ deadline_date_year);
-			System.out.println("#################################################################################");
+			System.out.println("#############################################################################");
 			System.out.println("");
 		}
 	}
