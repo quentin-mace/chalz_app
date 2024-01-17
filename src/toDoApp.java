@@ -1,4 +1,8 @@
 import java.time.LocalDateTime;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.*;
 
@@ -23,12 +27,30 @@ public class toDoApp {
 				case "4" :
 					end_program = true;
 					break;
+				case "5" :
+					saveToFile(list_of_tasks);
+					break;
 				default :
 					System.out.println("Invalid input (write a number between 1 and 4)");
 					break;
 			}
 		}
 		ask_user.close();
+	}
+	
+	public static void saveToFile(List<Task> list_of_tasks) {
+		int list_length = list_of_tasks.size();
+        try {
+        	FileOutputStream fichier = new FileOutputStream("save.dat");
+			ObjectOutputStream sortie = new ObjectOutputStream(fichier);
+			for (int i = 0; i<list_length ; i++) {
+				sortie.writeObject(list_of_tasks.get(i));
+			}
+			sortie.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	public static String displayMenu(Scanner ask_user){
@@ -39,6 +61,7 @@ public class toDoApp {
 		System.out.println("2. Display tasks");
 		System.out.println("3. Complete task");
 		System.out.println("4. Quit");
+		System.out.println("5. Save to file");
 		System.out.println("#############################################################################");
 		return ask_user.nextLine();
 	}
@@ -109,7 +132,7 @@ public class toDoApp {
 	}
 }
 
-class Task {
+class Task implements Serializable {
 	String title;
 	String description;
 	LocalDateTime creation_date;
