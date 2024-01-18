@@ -1,13 +1,10 @@
+import java.io.*;
 import java.time.LocalDateTime;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.ObjectOutputStream;
-import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.*;
 
 public class toDoApp {
-	public static void main(String[] args) {
+	public static void main(String[] args) throws ClassNotFoundException {
 		Scanner ask_user = new Scanner(System.in);
 		Boolean end_program = false;
 		String choice_menu = "";
@@ -25,10 +22,13 @@ public class toDoApp {
 					completeTask(list_of_tasks, ask_user);
 					break;
 				case "4" :
-					end_program = true;
+					saveToFile(list_of_tasks, ask_user);
 					break;
 				case "5" :
-					saveToFile(list_of_tasks);
+					list_of_tasks = readFromFile();
+					break;
+				case "6" :
+					end_program = true;
 					break;
 				default :
 					System.out.println("Invalid input (write a number between 1 and 4)");
@@ -38,20 +38,35 @@ public class toDoApp {
 		ask_user.close();
 	}
 	
-	public static void saveToFile(List<Task> list_of_tasks) {
-		int list_length = list_of_tasks.size();
+	public static void saveToFile(List<Task> list_of_tasks, Scanner ask_user) {
+		System.out.println("How do you wish to call your save file");
+		String file_name = ask_user.nextLine();
+		String local_dir = System.getProperty("user.dir");
         try {
-        	FileOutputStream fichier = new FileOutputStream("save.dat");
+        	FileOutputStream fichier = new FileOutputStream(local_dir + "\\..\\saves\\"+ file_name +".dat");
 			ObjectOutputStream sortie = new ObjectOutputStream(fichier);
-			for (int i = 0; i<list_length ; i++) {
-				sortie.writeObject(list_of_tasks.get(i));
-			}
+			sortie.writeObject(list_of_tasks);
 			sortie.close();
+			fichier.close();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
+
+	public static List<Task> readFromFile() throws ClassNotFoundException {
+		List<Task> list_input = new ArrayList<Task>();
+		String local_dir = System.getProperty("user.dir");
+		try {
+			FileInputStream fichier = new FileInputStream(local_dir + "\\..\\saves\\save.dat");
+			ObjectInputStream entree = new ObjectInputStream(fichier);
+			list_input = (List<Task>) entree.readObject();
+			entree.close();
+			fichier.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return list_input;
+    }
 
 	public static String displayMenu(Scanner ask_user){
 		System.out.println("#############################################################################");
@@ -60,15 +75,16 @@ public class toDoApp {
 		System.out.println("1. Create new task");
 		System.out.println("2. Display tasks");
 		System.out.println("3. Complete task");
-		System.out.println("4. Quit");
-		System.out.println("5. Save to file");
+		System.out.println("4. Save to file");
+		System.out.println("5. Load from file");
+		System.out.println("6. Quit");
 		System.out.println("#############################################################################");
 		return ask_user.nextLine();
 	}
 
 	public static void completeTask(List<Task> list_of_tasks, Scanner ask_user){
 		System.out.println("Which task do you wish to complete ?");
-		int number_entered = ask_user.nextInt();
+		int number_entered = Integer.parseInt(ask_user.nextLine());
 		int task_number = number_entered-1;
 		list_of_tasks.get(task_number).completed = true;
 		list_of_tasks.get(task_number).completion_date = LocalDateTime.now();
