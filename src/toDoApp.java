@@ -1,25 +1,32 @@
+import java.io.*;
 import java.time.LocalDateTime;
 import java.time.LocalDate;
 import java.util.*;
 
 public class toDoApp {
-	public static void main(String[] args) {
+	public static void main(String[] args) throws ClassNotFoundException {
+		Scanner ask_user = new Scanner(System.in);
 		Boolean end_program = false;
-		String choice_menu = "";
-		List<Task> list_of_tasks = new ArrayList<Task>();
+		List<Task> list_of_tasks = new ArrayList<>();
 		while (!end_program){
-			choice_menu = displayMenu();
+			String choice_menu = displayMenu(ask_user);
 			switch(choice_menu){
 				case "1" :
-					list_of_tasks.add(createTask());
+					list_of_tasks.add(createTask(ask_user));
 					break;
 				case "2" :
 					displayTasks(list_of_tasks);
 					break;
 				case "3" :
-					completeTask(list_of_tasks);
+					completeTask(list_of_tasks, ask_user);
 					break;
 				case "4" :
+					saveToFile(list_of_tasks, ask_user);
+					break;
+				case "5" :
+					list_of_tasks = loadFromFile(ask_user);
+					break;
+				case "6" :
 					end_program = true;
 					break;
 				default :
@@ -27,28 +34,85 @@ public class toDoApp {
 					break;
 			}
 		}
+		ask_user.close();
+	}
+	
+	public static void saveToFile(List<Task> list_of_tasks, Scanner ask_user) {
+		System.out.println("How do you wish to call your save file");
+		String file_name = ask_user.nextLine();
+		String local_dir = System.getProperty("user.dir");
+        try {
+        	FileOutputStream fichier = new FileOutputStream(local_dir + "\\..\\saves\\"+ file_name +".dat");
+			ObjectOutputStream sortie = new ObjectOutputStream(fichier);
+			sortie.writeObject(list_of_tasks);
+			sortie.close();
+			fichier.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
-	public static String displayMenu(){
-		Scanner ask_user = new Scanner(System.in);
+	public static List<String> listFilesInFolder(){
+		List<String> file_names = new ArrayList<>();
+		String local_dir = System.getProperty("user.dir");
+		String save_folder_path = local_dir + "\\..\\saves";
+		File save_folder = new File(save_folder_path);
+		File[] save_files = save_folder.listFiles();
+		for (int i = 0; i < Objects.requireNonNull(save_files).length; i++){
+			if (save_files[i].isFile()) {
+				file_names.add(save_files[i].getName().split("\\.")[0]);
+			}
+		}
+        return file_names;
+    }
+
+	public static List<Task> loadFromFile(Scanner ask_user) throws ClassNotFoundException {
+		List<Task> list_input = new ArrayList<Task>();
+		List<String> file_names = listFilesInFolder();
+		System.out.println("These are the saved to do lists :");
+		for (int i = 0; i<file_names.size(); i++){
+			System.out.print(file_names.get(i));
+			if (i < file_names.size()-1){
+				System.out.print("    ");
+			} else {
+				System.out.println();
+			}
+		}
+		System.out.println("Which do you want to load ?");
+		String file_to_load = ask_user.nextLine();
+		String local_dir = System.getProperty("user.dir");
+		try {
+			FileInputStream fichier = new FileInputStream(local_dir + "\\..\\saves\\"+file_to_load+".dat");
+			ObjectInputStream entree = new ObjectInputStream(fichier);
+			list_input = (List<Task>) entree.readObject();
+			entree.close();
+			fichier.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return list_input;
+    }
+
+	public static String displayMenu(Scanner ask_user){
 		System.out.println("#############################################################################");
 		System.out.println("What do you wish to do ?");
 		System.out.println("#############################################################################");
 		System.out.println("1. Create new task");
 		System.out.println("2. Display tasks");
 		System.out.println("3. Complete task");
-		System.out.println("4. Quit");
+		System.out.println("4. Save to file");
+		System.out.println("5. Load from file");
+		System.out.println("6. Quit");
 		System.out.println("#############################################################################");
 		return ask_user.nextLine();
 	}
 
-	public static void completeTask(List<Task> list_of_tasks){
-		Scanner ask_user = new Scanner(System.in);
+	public static void completeTask(List<Task> list_of_tasks, Scanner ask_user){
 		System.out.println("Which task do you wish to complete ?");
-		int number_entered = ask_user.nextInt();
+		int number_entered = Integer.parseInt(ask_user.nextLine());
 		int task_number = number_entered-1;
 		list_of_tasks.get(task_number).completed = true;
-		list_of_tasks.get(task_number).completion_date = LocalDateTime.now();		
+		list_of_tasks.get(task_number).completion_date = LocalDateTime.now();
 	}
 
 	public static void displayTasks(List<Task> list_of_tasks){
@@ -88,12 +152,11 @@ public class toDoApp {
 			System.out.print("Deadline : ");
 			System.out.println(deadline_date_day +"/"+ deadline_date_month +"/"+ deadline_date_year);
 			System.out.println("#############################################################################");
-			System.out.println("");
+			System.out.println();
 		}
 	}
 
-	public static Task createTask() {
-		Scanner ask_user = new Scanner(System.in);
+	public static Task createTask(Scanner ask_user) {
 		System.out.println("What's the name of your task ?");
 		String title = ask_user.nextLine();
 		System.out.println("What's the description of your task ?");
@@ -105,12 +168,11 @@ public class toDoApp {
 		int month = Integer.parseInt(deadline_splitted[1]);
 		int year = Integer.parseInt(deadline_splitted[2]);
 		LocalDate deadline_date = LocalDate.of(year, month, day);
-		Task task_created = new Task(title, description, deadline_date);
-		return task_created;
+        return new Task(title, description, deadline_date);
 	}
 }
 
-class Task {
+class Task implements Serializable {
 	String title;
 	String description;
 	LocalDateTime creation_date;
