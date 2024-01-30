@@ -7,7 +7,7 @@ public class ChalzFrame extends JFrame {
         String local_dir = System.getProperty("user.dir");
         ImageIcon chalzIcon = new ImageIcon(local_dir + "\\..\\chalzIcon.png");
 
-        this.setLayout(null);
+        this.setLayout(new BorderLayout());
         this.setSize(500,750);
         this.setTitle("Chalz");
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

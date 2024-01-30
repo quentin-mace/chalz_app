@@ -28,8 +28,8 @@ Each task is composed of :
  |        Make a function to load a todo from a file        |    Done     |
  |        Learn Java Swing : Make a frame and labels        |    Done     |
  |              Learn Java Swing : Make panels              |    Done     |
- |             Learn Java Swing : Make buttons              | In progress |
- |         Learn Java Swing : Make advanced layouts         | Not started |
- |           Learn Java Swing : Make text fields            | Not started |
- |            Learn Java Swing : Make checkboxes            | Not started |
+ |             Learn Java Swing : Make buttons              |    Done     |
+ |         Learn Java Swing : Make advanced layouts         |    Done     |
+ |           Learn Java Swing : Make text fields            |    Done     |
+ |            Learn Java Swing : Make checkboxes            |    Done     |
  |                 Make a visual interface                  | Not started |
