@@ -1,7 +1,6 @@
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.event.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,27 +8,34 @@ import java.util.List;
 import static java.awt.Image.SCALE_SMOOTH;
 
 public class GUI extends JFrame implements ActionListener {
+
     JButton start_button;
     JButton task_button;
     JButton save_button;
     JButton load_button;
     JButton quit_button;
+
     JPanel main_panel;
     JPanel menu_panel;
     JPanel tasks_panel;
+
     JScrollPane task_scroll;
+
     ChalzFrame scene;
+    LoadFrame loader;
+
     List<Task> list_of_tasks;
     List<TaskPanel> list_of_task_panels;
+    WindowListener exitFrame;
 
-    public static void main(String[] args) {
-        List<Task> taskList = new ArrayList<>();
-
-        new GUI(taskList);
-    }
     GUI(List<Task> list_of_tasks) {
+
+        exitFrame = getWindowAdapter();
+
+
         this.list_of_tasks = list_of_tasks;
         this.list_of_task_panels = new ArrayList<>();
+
         String local_dir = System.getProperty("user.dir");
         ImageIcon chalzIcon = new ImageIcon(local_dir + "\\..\\chalzIcon.png");
         Image chalzImage = chalzIcon.getImage();
@@ -58,6 +64,16 @@ public class GUI extends JFrame implements ActionListener {
         scene.add(main_panel,BorderLayout.CENTER);
     }
 
+    private WindowAdapter getWindowAdapter() {
+        return new WindowAdapter() {
+
+            @Override
+            public void windowClosing(WindowEvent e) {
+                enableScene();
+            }
+        };
+    }
+
     private void makeMenu(){
         task_button = makeButton("New Task",85,30,150,30);
         save_button = makeButton("Save",265,30,150,30);
@@ -71,18 +87,16 @@ public class GUI extends JFrame implements ActionListener {
 
         main_panel.add(task_scroll, BorderLayout.CENTER);
 
-        for (int i = 0; i < 5; i++) {
+        list_of_task_panels.clear();
+        for (int i = 0; i < list_of_tasks.size(); i++) {
             list_of_task_panels.add(new TaskPanel());
             tasks_panel.add(list_of_task_panels.get(i));
         }
 
         menu_panel.repaint();
-
-        System.out.println("Menu made !");
-
     }
 
-    private JButton makeButton(String name, int x, int y, int width, int height) {
+    public JButton makeButton(String name, int x, int y, int width, int height) {
         JButton button = new JButton();
         button.setBounds(x,y,width,height);
         button.addActionListener(this);
@@ -137,6 +151,25 @@ public class GUI extends JFrame implements ActionListener {
         return startScreen_title;
     }
 
+    private void launchLoader() throws ClassNotFoundException {
+        scene.setEnabled(false);
+
+        loader = new LoadFrame(list_of_tasks);
+        loader.addWindowListener(exitFrame);
+        loader.load_button.addActionListener(this);
+        loader.cancel_button.addActionListener(this);
+    }
+
+    public void saveFileLoader(String save_name) throws ClassNotFoundException {
+        list_of_tasks = new FileHandler().loadFromFile(save_name);
+        enableScene();
+        makeMenu();
+    }
+
+    public void enableScene(){
+        scene.setEnabled(true);
+    }
+
 
     @Override
     public void actionPerformed(ActionEvent e) {
@@ -144,6 +177,33 @@ public class GUI extends JFrame implements ActionListener {
             start_button.setVisible(false);
             menu_panel.remove(start_button);
             makeMenu();
+        }
+
+        if (e.getSource() == load_button) {
+            try {
+                launchLoader();
+            } catch (ClassNotFoundException ex) {
+                throw new RuntimeException(ex);
+            }
+        }
+
+        if (e.getSource() == quit_button) {
+            System.exit(-1);
+        }
+
+        if (this.loader != null && e.getSource() == loader.load_button) {
+            loader.result = loader.save_picker.getSelectedItem().toString();
+            try {
+                saveFileLoader(loader.result);
+            } catch (ClassNotFoundException ex) {
+                throw new RuntimeException(ex);
+            }
+            loader.dispose();
+        }
+
+        if (this.loader != null && e.getSource() == loader.cancel_button) {
+            loader.dispose();
+            enableScene();
         }
     }
 }

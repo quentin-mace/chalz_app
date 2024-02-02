@@ -1,98 +1,17 @@
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.*;
 import java.time.LocalDateTime;
 import java.time.LocalDate;
 import java.util.*;
 
-public class toDoApp {
+public class toDoApp implements ActionListener {
 
 	public static void main(String[] args) throws ClassNotFoundException {
-		Scanner ask_user = new Scanner(System.in);
-		Boolean end_program = false;
 		List<Task> list_of_tasks = new ArrayList<>();
-		while (!end_program){
-			String choice_menu = displayMenu(ask_user);
-			switch(choice_menu){
-				case "1" :
-					list_of_tasks.add(createTask(ask_user));
-					break;
-				case "2" :
-					displayTasks(list_of_tasks);
-					break;
-				case "3" :
-					completeTask(list_of_tasks, ask_user);
-					break;
-				case "4" :
-					saveToFile(list_of_tasks, ask_user);
-					break;
-				case "5" :
-					list_of_tasks = loadFromFile(ask_user);
-					break;
-				case "6" :
-					end_program = true;
-					break;
-				default :
-					System.out.println("Invalid input (write a number between 1 and 4)");
-					break;
-			}
-		}
-		ask_user.close();
-	}
-	
-	public static void saveToFile(List<Task> list_of_tasks, Scanner ask_user) {
-		System.out.println("How do you wish to call your save file");
-		String file_name = ask_user.nextLine();
-		String local_dir = System.getProperty("user.dir");
-        try {
-        	FileOutputStream fichier = new FileOutputStream(local_dir + "\\..\\saves\\"+ file_name +".dat");
-			ObjectOutputStream sortie = new ObjectOutputStream(fichier);
-			sortie.writeObject(list_of_tasks);
-			sortie.close();
-			fichier.close();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
+		GUI gui = new GUI(list_of_tasks);
 
-	public static List<String> listFilesInFolder(){
-		List<String> file_names = new ArrayList<>();
-		String local_dir = System.getProperty("user.dir");
-		String save_folder_path = local_dir + "\\..\\saves";
-		File save_folder = new File(save_folder_path);
-		File[] save_files = save_folder.listFiles();
-		for (int i = 0; i < Objects.requireNonNull(save_files).length; i++){
-			if (save_files[i].isFile()) {
-				file_names.add(save_files[i].getName().split("\\.")[0]);
-			}
-		}
-        return file_names;
-    }
-
-	public static List<Task> loadFromFile(Scanner ask_user) throws ClassNotFoundException {
-		List<Task> list_input = new ArrayList<Task>();
-		List<String> file_names = listFilesInFolder();
-		System.out.println("These are the saved to do lists :");
-		for (int i = 0; i<file_names.size(); i++){
-			System.out.print(file_names.get(i));
-			if (i < file_names.size()-1){
-				System.out.print("    ");
-			} else {
-				System.out.println();
-			}
-		}
-		System.out.println("Which do you want to load ?");
-		String file_to_load = ask_user.nextLine();
-		String local_dir = System.getProperty("user.dir");
-		try {
-			FileInputStream fichier = new FileInputStream(local_dir + "\\..\\saves\\"+file_to_load+".dat");
-			ObjectInputStream entree = new ObjectInputStream(fichier);
-			list_input = (List<Task>) entree.readObject();
-			entree.close();
-			fichier.close();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		return list_input;
-    }
+	}
 
 	public static String displayMenu(Scanner ask_user){
 		System.out.println("#############################################################################");
@@ -106,14 +25,6 @@ public class toDoApp {
 		System.out.println("6. Quit");
 		System.out.println("#############################################################################");
 		return ask_user.nextLine();
-	}
-
-	public static void completeTask(List<Task> list_of_tasks, Scanner ask_user){
-		System.out.println("Which task do you wish to complete ?");
-		int number_entered = Integer.parseInt(ask_user.nextLine());
-		int task_number = number_entered-1;
-		list_of_tasks.get(task_number).completed = true;
-		list_of_tasks.get(task_number).completion_date = LocalDateTime.now();
 	}
 
 	public static void displayTasks(List<Task> list_of_tasks){
@@ -171,21 +82,10 @@ public class toDoApp {
 		LocalDate deadline_date = LocalDate.of(year, month, day);
         return new Task(title, description, deadline_date);
 	}
-}
 
-class Task implements Serializable {
-	String title;
-	String description;
-	LocalDateTime creation_date;
-	Boolean completed;
-	LocalDateTime completion_date;
-	LocalDate deadline_date;
-	Task(String title, String description, LocalDate deadline_date) {
-		this.title = title;
-		this.description = description;
-		this.creation_date = LocalDateTime.now();
-		this.completed = false;
-		this.completion_date = LocalDateTime.now();
-		this.deadline_date = deadline_date;
+	@Override
+	public void actionPerformed(ActionEvent e) {
+
 	}
 }
+
