@@ -9,7 +9,7 @@ public class LoadFrame extends JFrame implements ActionListener {
     JComboBox save_picker;
     JButton load_button;
     JButton cancel_button;
-    LoadFrame(List<Task> tasks){
+    LoadFrame(){
         List<String> file_names = new FileHandler().listFilesInFolder();
         String[] names = new String[file_names.size()];
         names = file_names.toArray(names);
@@ -18,7 +18,7 @@ public class LoadFrame extends JFrame implements ActionListener {
         ImageIcon chalzIcon = new ImageIcon(local_dir + "\\..\\chalzIcon.png");
 
         this.setLayout(null);
-        this.setSize(250,150);
+        this.setSize(250,140);
         this.setTitle("Load");
         this.setResizable(false);
         this.setIconImage(chalzIcon.getImage());

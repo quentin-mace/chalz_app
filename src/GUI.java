@@ -23,6 +23,7 @@ public class GUI extends JFrame implements ActionListener {
 
     ChalzFrame scene;
     LoadFrame loader;
+    NewTaskFrame task_maker;
 
     List<Task> list_of_tasks;
     List<TaskPanel> list_of_task_panels;
@@ -87,14 +88,25 @@ public class GUI extends JFrame implements ActionListener {
 
         main_panel.add(task_scroll, BorderLayout.CENTER);
 
+        menu_panel.repaint();
+    }
+
+    private void displayTasks() {
         list_of_task_panels.clear();
         for (int i = 0; i < list_of_tasks.size(); i++) {
             list_of_task_panels.add(new TaskPanel());
+            setTaskPanel(list_of_tasks.get(i), list_of_task_panels.get(i));
             tasks_panel.add(list_of_task_panels.get(i));
         }
-
-        menu_panel.repaint();
+        tasks_panel.repaint();
     }
+
+    private void setTaskPanel(Task task, TaskPanel panel){
+        panel.title = task.title;
+        panel.description = task.description;
+    }
+
+
 
     public JButton makeButton(String name, int x, int y, int width, int height) {
         JButton button = new JButton();
@@ -117,7 +129,6 @@ public class GUI extends JFrame implements ActionListener {
         panel.setPreferredSize(new Dimension(width, height));
         return panel;
     }
-
 
     private static JPanel makeWrapPanel(Color color) {
         JPanel panel = new JPanel();
@@ -151,19 +162,26 @@ public class GUI extends JFrame implements ActionListener {
         return startScreen_title;
     }
 
-    private void launchLoader() throws ClassNotFoundException {
+    private void openLoaderMenu() throws ClassNotFoundException {
         scene.setEnabled(false);
 
-        loader = new LoadFrame(list_of_tasks);
+        loader = new LoadFrame();
         loader.addWindowListener(exitFrame);
         loader.load_button.addActionListener(this);
         loader.cancel_button.addActionListener(this);
     }
 
-    public void saveFileLoader(String save_name) throws ClassNotFoundException {
+    private void openNewTaskMenu() throws ClassNotFoundException {
+        scene.setEnabled(false);
+
+        task_maker = new NewTaskFrame();
+        task_maker.addWindowListener(exitFrame);
+        task_maker.create_button.addActionListener(this);
+        task_maker.cancel_button.addActionListener(this);
+    }
+
+    public void loadSaveFile(String save_name) throws ClassNotFoundException {
         list_of_tasks = new FileHandler().loadFromFile(save_name);
-        enableScene();
-        makeMenu();
     }
 
     public void enableScene(){
@@ -181,7 +199,15 @@ public class GUI extends JFrame implements ActionListener {
 
         if (e.getSource() == load_button) {
             try {
-                launchLoader();
+                openLoaderMenu();
+            } catch (ClassNotFoundException ex) {
+                throw new RuntimeException(ex);
+            }
+        }
+
+        if (e.getSource() == task_button) {
+            try {
+                openNewTaskMenu();
             } catch (ClassNotFoundException ex) {
                 throw new RuntimeException(ex);
             }
@@ -191,10 +217,14 @@ public class GUI extends JFrame implements ActionListener {
             System.exit(-1);
         }
 
+
+
         if (this.loader != null && e.getSource() == loader.load_button) {
             loader.result = loader.save_picker.getSelectedItem().toString();
             try {
-                saveFileLoader(loader.result);
+                loadSaveFile(loader.result);
+                enableScene();
+                displayTasks();
             } catch (ClassNotFoundException ex) {
                 throw new RuntimeException(ex);
             }

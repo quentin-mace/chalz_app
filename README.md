@@ -36,3 +36,6 @@ Each task is composed of :
  |            Make the create task button method            |   To Do    |
  |             Make the save file button method             |   To Do    |
  |               Make the quit button method                |    Done    |
+
+In progress : New task menu made. Now needs to get the info and 
+create a new task with it.
