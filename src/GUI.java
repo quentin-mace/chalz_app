@@ -1,6 +1,7 @@
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -50,6 +51,8 @@ public class GUI extends JFrame implements ActionListener {
         task_scroll = new JScrollPane(tasks_panel);
         task_scroll.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
         task_scroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+        task_scroll.setOpaque(false);
+        task_scroll.setBorder(null);
 
 
         JLabel startScreen_title = makeTitleLabel(chalzIcon);
@@ -92,21 +95,21 @@ public class GUI extends JFrame implements ActionListener {
     }
 
     private void displayTasks() {
+        clearDisplayedTasks();
         list_of_task_panels.clear();
         for (int i = 0; i < list_of_tasks.size(); i++) {
-            list_of_task_panels.add(new TaskPanel());
-            setTaskPanel(list_of_tasks.get(i), list_of_task_panels.get(i));
+            list_of_task_panels.add(new TaskPanel(list_of_tasks.get(i).title, list_of_tasks.get(i).description, LocalDate.now()));
             tasks_panel.add(list_of_task_panels.get(i));
         }
-        tasks_panel.repaint();
+        this.task_scroll.revalidate();
+        this.task_scroll.repaint();
     }
 
-    private void setTaskPanel(Task task, TaskPanel panel){
-        panel.title = task.title;
-        panel.description = task.description;
+    private void clearDisplayedTasks(){
+        for (int i = 0; i < list_of_task_panels.size(); i++) {
+            tasks_panel.remove(list_of_task_panels.get(i));
+        }
     }
-
-
 
     public JButton makeButton(String name, int x, int y, int width, int height) {
         JButton button = new JButton();
@@ -162,6 +165,8 @@ public class GUI extends JFrame implements ActionListener {
         return startScreen_title;
     }
 
+
+
     private void openLoaderMenu() throws ClassNotFoundException {
         scene.setEnabled(false);
 
@@ -183,6 +188,25 @@ public class GUI extends JFrame implements ActionListener {
     public void loadSaveFile(String save_name) throws ClassNotFoundException {
         list_of_tasks = new FileHandler().loadFromFile(save_name);
     }
+
+    private void setNewTask() {
+        String title = task_maker.title_field.getText();
+        String description = task_maker.description_field.getText();
+        Task new_task = new Task(title, description, LocalDate.now());
+        list_of_tasks.add(new_task);
+        enableScene();
+        displayTasks();
+    }
+
+    private void showTasksList(){
+        String titles = "";
+        for (int i = 0; i < list_of_tasks.size(); i++) {
+            titles = titles.concat(list_of_tasks.get(i).title);
+        }
+        JOptionPane.showMessageDialog(null, titles, "List of tasks",JOptionPane.PLAIN_MESSAGE);
+    }
+
+
 
     public void enableScene(){
         scene.setEnabled(true);
@@ -233,6 +257,18 @@ public class GUI extends JFrame implements ActionListener {
 
         if (this.loader != null && e.getSource() == loader.cancel_button) {
             loader.dispose();
+            enableScene();
+        }
+
+
+
+        if (this.task_maker != null && e.getSource() == task_maker.create_button) {
+            setNewTask();
+            task_maker.dispose();
+        }
+
+        if (this.task_maker != null && e.getSource() == task_maker.cancel_button) {
+            task_maker.dispose();
             enableScene();
         }
     }
