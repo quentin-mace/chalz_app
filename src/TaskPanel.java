@@ -14,13 +14,14 @@ public class TaskPanel extends JPanel implements ActionListener {
     LocalDate deadline_date;
 
     private JLabel task_name;
+    private JLabel task_deadline;
     private JTextArea task_description;
     private JButton delete_button;
 
     TaskPanel(String title, String description, LocalDate deadline_date) {
         this.setBackground(new Color(227, 227, 227));
         this.setLayout(null);
-        this.setPreferredSize(new Dimension(400, 150));
+        this.setPreferredSize(new Dimension(400, 160));
         this.creation_date = LocalDateTime.now();
         this.completed = false;
         this.completion_date = LocalDateTime.now();
@@ -31,6 +32,7 @@ public class TaskPanel extends JPanel implements ActionListener {
 
         this.task_name = makeTaskName(title);
         this.task_description = makeTaskDescription(description);
+        this.task_deadline = makeDeadlineLabel(getDateString(deadline_date));
         this.delete_button = makeCloseButton();
 
         JScrollPane description_scroll = new JScrollPane(task_description);
@@ -41,6 +43,7 @@ public class TaskPanel extends JPanel implements ActionListener {
         description_scroll.setBackground(new Color(227, 227, 227));
         description_scroll.setBounds(10,40,330,80);
 
+        this.add(task_deadline);
         this.add(task_name);
         this.add(description_scroll);
         this.add(delete_button);
@@ -52,6 +55,10 @@ public class TaskPanel extends JPanel implements ActionListener {
 
     public void setDescription(String description){
         task_description = makeTaskDescription(description);
+    }
+
+    public void setDeadline(LocalDate date){
+        task_name = makeDeadlineLabel(getDateString(date));
     }
 
     private JLabel makeTaskName(String text) {
@@ -74,6 +81,28 @@ public class TaskPanel extends JPanel implements ActionListener {
         description_name.setFont(new Font("Arial",Font.TRUETYPE_FONT,16));
         description_name.setBounds(10,40,350,-1);
         return description_name;
+    }
+
+    private JLabel makeDeadlineLabel(String date_string) {
+        JLabel task_name = new JLabel("Deadline : " + date_string);
+        task_name.setForeground(Color.BLACK);
+        task_name.setFont(new Font("Arial",Font.TRUETYPE_FONT,16));
+        task_name.setBounds(10,130,200,20);
+        return task_name;
+    }
+
+    private String getDateString(LocalDate date){
+        String day = String.format("%02d",date.getDayOfMonth());
+        String month = String.format("%02d",date.getMonthValue());
+        String year = String.valueOf(date.getYear());
+        return day + "/" + month + "/" + year;
+    }
+
+    private String getDateString(LocalDateTime date){
+        String day = String.format("%02d",date.getDayOfMonth());
+        String month = String.format("%02d",date.getMonthValue());
+        String year = String.valueOf(date.getYear());
+        return day + "/" + month + "/" + year;
     }
 
     private JButton makeCloseButton(){

@@ -98,7 +98,7 @@ public class GUI extends JFrame implements ActionListener {
         clearDisplayedTasks();
         list_of_task_panels.clear();
         for (int i = 0; i < list_of_tasks.size(); i++) {
-            list_of_task_panels.add(new TaskPanel(list_of_tasks.get(i).title, list_of_tasks.get(i).description, LocalDate.now()));
+            list_of_task_panels.add(new TaskPanel(list_of_tasks.get(i).title, list_of_tasks.get(i).description, list_of_tasks.get(i).deadline_date));
             tasks_panel.add(list_of_task_panels.get(i));
         }
         this.task_scroll.revalidate();
@@ -192,7 +192,11 @@ public class GUI extends JFrame implements ActionListener {
     private void setNewTask() {
         String title = task_maker.title_field.getText();
         String description = task_maker.description_field.getText();
-        Task new_task = new Task(title, description, LocalDate.now());
+        int deadline_day = Integer.parseInt(task_maker.day_field.getText());
+        int deadline_month = Integer.parseInt(task_maker.month_field.getText());
+        int deadline_year = Integer.parseInt(task_maker.year_field.getText());
+        LocalDate deadline = LocalDate.of(deadline_year, deadline_month, deadline_day);
+        Task new_task = new Task(title, description, deadline);
         list_of_tasks.add(new_task);
         enableScene();
         displayTasks();

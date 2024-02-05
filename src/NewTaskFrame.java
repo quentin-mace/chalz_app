@@ -5,6 +5,9 @@ import java.awt.event.ActionListener;
 
 public class NewTaskFrame extends JFrame implements ActionListener {
     JTextField title_field;
+    JTextField day_field;
+    JTextField month_field;
+    JTextField year_field;
     JTextArea description_field;
 
     JButton create_button;
@@ -16,7 +19,7 @@ public class NewTaskFrame extends JFrame implements ActionListener {
         ImageIcon chalzIcon = new ImageIcon(local_dir + "\\..\\chalzIcon.png");
 
         this.setLayout(null);
-        this.setSize(250,280);
+        this.setSize(250,310);
         this.setTitle("New Task");
         this.setResizable(false);
         this.setIconImage(chalzIcon.getImage());
@@ -29,15 +32,22 @@ public class NewTaskFrame extends JFrame implements ActionListener {
         JLabel description_title = textLabel("Description :",10,70,200,20);
         description_field = makeTextArea("Description", 10, 100, 200, -1);
         description_field.setLineWrap(true);
-        create_button = makeButton("Create", 10,210,100,20);
-        cancel_button = makeButton("Cancel", 120,210,100,20);
+        JLabel pick_date_label = textLabel("Deadline :            /           /",10,210,200,20);
+        day_field = makeTextField("DD", 65, 210, 30, 20);
+        month_field = makeTextField("MM", 100, 210, 30, 20);
+        year_field = makeTextField("YYYY", 135, 210, 60, 20);
+        create_button = makeButton("Create", 10,240,100,20);
+        cancel_button = makeButton("Cancel", 120,240,100,20);
         JScrollPane description_scroll = new JScrollPane(description_field);
         description_scroll.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
         description_scroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
         description_scroll.setBounds(10, 100, 200, 100);
 
 
-
+        this.add(pick_date_label);
+        this.add(day_field);
+        this.add(month_field);
+        this.add(year_field);
         this.add(ask_title);
         this.add(title_field);
         this.add(description_title);
@@ -63,8 +73,8 @@ public class NewTaskFrame extends JFrame implements ActionListener {
         JLabel label = new JLabel(text);
         label.setForeground(Color.BLACK);
         label.setFont(new Font("Arial",Font.PLAIN,10));
-        label.setVerticalAlignment(JLabel.CENTER);
-        label.setHorizontalAlignment(JLabel.CENTER);
+//        label.setVerticalAlignment(JLabel.CENTER);
+//        label.setHorizontalAlignment(JLabel.CENTER);
         label.setBounds(x,y,width,height);
         return label;
     }
@@ -80,6 +90,7 @@ public class NewTaskFrame extends JFrame implements ActionListener {
         field.setBounds(x,y,width,height);
         return field;
     }
+
 
     @Override
     public void actionPerformed(ActionEvent e) {

@@ -37,4 +37,5 @@ Each task is composed of :
  |             Make the save file button method             |   To Do    |
  |               Make the quit button method                |    Done    |
 
-In progress : Tasks panels to be improved. Need to add dates and "completed" checkbox.
+In progress : Added the deadline option to the new task button. New task button finished. 
+Need to add the "Completed" checkbox.
