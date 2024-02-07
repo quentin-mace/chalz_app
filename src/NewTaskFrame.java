@@ -2,6 +2,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.time.LocalDateTime;
 
 public class NewTaskFrame extends JFrame implements ActionListener {
     JTextField title_field;
@@ -17,6 +18,7 @@ public class NewTaskFrame extends JFrame implements ActionListener {
 
         String local_dir = System.getProperty("user.dir");
         ImageIcon chalzIcon = new ImageIcon(local_dir + "\\..\\chalzIcon.png");
+        LocalDateTime now_time = LocalDateTime.now();
 
         this.setLayout(null);
         this.setSize(250,310);
@@ -33,9 +35,9 @@ public class NewTaskFrame extends JFrame implements ActionListener {
         description_field = makeTextArea("Description", 10, 100, 200, -1);
         description_field.setLineWrap(true);
         JLabel pick_date_label = textLabel("Deadline :            /           /",10,210,200,20);
-        day_field = makeTextField("DD", 65, 210, 30, 20);
-        month_field = makeTextField("MM", 100, 210, 30, 20);
-        year_field = makeTextField("YYYY", 135, 210, 60, 20);
+        day_field = makeTextField(String.valueOf(now_time.getDayOfMonth()), 65, 210, 30, 20);
+        month_field = makeTextField(String.valueOf(now_time.getMonthValue()), 100, 210, 30, 20);
+        year_field = makeTextField(String.valueOf(now_time.getYear()), 135, 210, 60, 20);
         create_button = makeButton("Create", 10,240,100,20);
         cancel_button = makeButton("Cancel", 120,240,100,20);
         JScrollPane description_scroll = new JScrollPane(description_field);
@@ -73,8 +75,6 @@ public class NewTaskFrame extends JFrame implements ActionListener {
         JLabel label = new JLabel(text);
         label.setForeground(Color.BLACK);
         label.setFont(new Font("Arial",Font.PLAIN,10));
-//        label.setVerticalAlignment(JLabel.CENTER);
-//        label.setHorizontalAlignment(JLabel.CENTER);
         label.setBounds(x,y,width,height);
         return label;
     }

@@ -12,11 +12,14 @@ public class TaskPanel extends JPanel implements ActionListener {
     Boolean completed;
     LocalDateTime completion_date;
     LocalDate deadline_date;
+    int task_number;
 
     private JLabel task_name;
     private JLabel task_deadline;
     private JTextArea task_description;
-    private JButton delete_button;
+    private JCheckBox completed_box;
+    private JLabel completion_label;
+    JButton delete_button;
 
     TaskPanel(String title, String description, LocalDate deadline_date) {
         this.setBackground(new Color(227, 227, 227));
@@ -34,6 +37,7 @@ public class TaskPanel extends JPanel implements ActionListener {
         this.task_description = makeTaskDescription(description);
         this.task_deadline = makeDeadlineLabel(getDateString(deadline_date));
         this.delete_button = makeCloseButton();
+        this.completed_box = makeCompletedBox();
 
         JScrollPane description_scroll = new JScrollPane(task_description);
         description_scroll.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
@@ -41,8 +45,9 @@ public class TaskPanel extends JPanel implements ActionListener {
         description_scroll.setOpaque(false);
         description_scroll.setBorder(null);
         description_scroll.setBackground(new Color(227, 227, 227));
-        description_scroll.setBounds(10,40,330,80);
+        description_scroll.setBounds(10,40,350,80);
 
+        this.add(completed_box);
         this.add(task_deadline);
         this.add(task_name);
         this.add(description_scroll);
@@ -60,6 +65,30 @@ public class TaskPanel extends JPanel implements ActionListener {
     public void setDeadline(LocalDate date){
         task_name = makeDeadlineLabel(getDateString(date));
     }
+
+    public void setTaskNumber(int number){
+        this.task_number = number;
+    }
+
+
+
+    public int getTaskNumber(){return this.task_number;}
+
+    private String getDateString(LocalDate date){
+        String day = String.format("%02d",date.getDayOfMonth());
+        String month = String.format("%02d",date.getMonthValue());
+        String year = String.valueOf(date.getYear());
+        return day + "/" + month + "/" + year;
+    }
+
+    private String getDateString(LocalDateTime date){
+        String day = String.format("%02d",date.getDayOfMonth());
+        String month = String.format("%02d",date.getMonthValue());
+        String year = String.valueOf(date.getYear());
+        return day + "/" + month + "/" + year;
+    }
+
+
 
     private JLabel makeTaskName(String text) {
         JLabel task_name = new JLabel(text);
@@ -91,18 +120,22 @@ public class TaskPanel extends JPanel implements ActionListener {
         return task_name;
     }
 
-    private String getDateString(LocalDate date){
-        String day = String.format("%02d",date.getDayOfMonth());
-        String month = String.format("%02d",date.getMonthValue());
-        String year = String.valueOf(date.getYear());
-        return day + "/" + month + "/" + year;
+    private JLabel makeCompletionLabel(String date_string) {
+        JLabel label = new JLabel(" the " + date_string);
+        label.setForeground(Color.BLACK);
+        label.setFont(new Font("Arial",Font.TRUETYPE_FONT,12));
+        label.setBounds(300,130,100,20);
+        return label;
     }
 
-    private String getDateString(LocalDateTime date){
-        String day = String.format("%02d",date.getDayOfMonth());
-        String month = String.format("%02d",date.getMonthValue());
-        String year = String.valueOf(date.getYear());
-        return day + "/" + month + "/" + year;
+    private JCheckBox makeCompletedBox(){
+        JCheckBox box = new JCheckBox();
+        box.setText("Completed : ");
+        box.setFocusable(false);
+        box.addActionListener(this);
+        box.setHorizontalTextPosition(SwingConstants.LEFT);
+        box.setBounds(200,130,100,20);
+        return box;
     }
 
     private JButton makeCloseButton(){
@@ -118,8 +151,30 @@ public class TaskPanel extends JPanel implements ActionListener {
         return button;
     }
 
+    private void checkCompleteTask(){
+        this.completion_date = LocalDateTime.now();
+        String date_label = getDateString(completion_date);
+        completion_label = makeCompletionLabel(date_label);
+        this.add(completion_label);
+        this.revalidate();
+        this.repaint();
+    }
+
+    private void uncheckCompleteTask(){
+        this.remove(completion_label);
+        this.revalidate();
+        this.repaint();
+    }
+
     @Override
     public void actionPerformed(ActionEvent e) {
-
+        if(e.getSource() == completed_box){
+            if (completed_box.isSelected()){
+                checkCompleteTask();
+            }
+            if(!completed_box.isSelected()){
+                uncheckCompleteTask();
+            }
+        }
     }
 }

@@ -99,6 +99,8 @@ public class GUI extends JFrame implements ActionListener {
         list_of_task_panels.clear();
         for (int i = 0; i < list_of_tasks.size(); i++) {
             list_of_task_panels.add(new TaskPanel(list_of_tasks.get(i).title, list_of_tasks.get(i).description, list_of_tasks.get(i).deadline_date));
+            list_of_task_panels.get(i).setTaskNumber(i);
+            list_of_task_panels.get(i).delete_button.addActionListener(this);
             tasks_panel.add(list_of_task_panels.get(i));
         }
         this.task_scroll.revalidate();
@@ -275,5 +277,16 @@ public class GUI extends JFrame implements ActionListener {
             task_maker.dispose();
             enableScene();
         }
+
+
+        for (int i =0; i<list_of_task_panels.size(); i++){
+            if(e.getSource() == list_of_task_panels.get(i).delete_button){
+                list_of_tasks.remove(i);
+                displayTasks();
+            }
+
+
+        }
     }
+
 }
