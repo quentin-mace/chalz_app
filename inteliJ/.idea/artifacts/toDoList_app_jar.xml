@@ -3,6 +3,7 @@
     <output-path>$PROJECT_DIR$/out/artifacts/toDoList_app_jar</output-path>
     <root id="archive" name="toDoList_app.jar">
       <element id="module-output" name="toDoList_app" />
+      <element id="module-source" name="toDoList_app" />
     </root>
   </artifact>
 </component>

@@ -44,9 +44,6 @@ public class GUI extends JFrame implements ActionListener {
 
         URL icon_url = getClass().getResource("/resources/chalzIcon.png");
         ImageIcon chalzIcon = new ImageIcon(icon_url);
-
-//        String local_dir = System.getProperty("user.dir");
-//        ImageIcon chalzIcon = new ImageIcon(local_dir + "\\..\\chalzIcon.png");
         Image chalzImage = chalzIcon.getImage();
         Image chalzImageScaled = chalzImage.getScaledInstance(30, 30, SCALE_SMOOTH);
         chalzIcon.setImage(chalzImageScaled);

@@ -9,4 +9,7 @@ and save them, so you can load them later.
 ## Can I use it ?
 Sure, **Chalz** is free to use for all purposes and available to everyone.
 
-### Version 1.0.0
+## How to run it ?
+Just download the .jar file and run it ;)
+
+### Version 1.0.2

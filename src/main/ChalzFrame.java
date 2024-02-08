@@ -2,12 +2,13 @@ package main;
 
 import javax.swing.*;
 import java.awt.*;
+import java.net.URL;
 
 public class ChalzFrame extends JFrame {
 
     ChalzFrame(){
-        String local_dir = System.getProperty("user.dir");
-        ImageIcon chalzIcon = new ImageIcon(local_dir + "\\..\\chalzIcon.png");
+        URL icon_url = getClass().getResource("/resources/chalzIcon.png");
+        ImageIcon chalzIcon = new ImageIcon(icon_url);
 
         this.setLayout(new BorderLayout());
         this.setSize(500,750);
