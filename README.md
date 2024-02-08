@@ -1,40 +1,12 @@
-# ToDo List app
-A java ToDo list app.
-This is my first hands on Java project. 
+# Chalz
+**Chalz** is a basic ToDo list app made in Java.
+This is my first Java project.
 
-The goal is to ceate a todo list wich can :
- - Create tasks and store them in a file that can be loaded later.
- - Oranize task per priorities
+## What is it ?
+With **Chalz**, you can create basic *to do lists* with deadlines, check them if completed,
+and save them, so you can load them later.
 
-Each task is composed of :
- - A title
- - A descrition
- - A date of creation
- - If the task is completed or no.
- - When completed, a date of completion.
- - A date of deadline
+## Can I use it ?
+Sure, **Chalz** is free to use for all purposes and available to everyone.
 
- ***
-
- ## To Do List :
- |                         **Task**                         | **Status** |
- |:--------------------------------------------------------:|:----------:|
- |                Make a class for each task                |    Done    |
- |            Make a method to create a new task            |    Done    |
- | Make a method to display the different tasks in terminal |    Done    |
- |       Make a method to change the status of a task       |    Done    |
- |       Make a method to display a menu in terminal        |    Done    |
- |        Make a function to save the todo in a file        |    Done    |
- |        Make a function to load a todo from a file        |    Done    |
- |        Learn Java Swing : Make a frame and labels        |    Done    |
- |              Learn Java Swing : Make panels              |    Done    |
- |             Learn Java Swing : Make buttons              |    Done    |
- |         Learn Java Swing : Make advanced layouts         |    Done    |
- |           Learn Java Swing : Make text fields            |    Done    |
- |            Learn Java Swing : Make checkboxes            |    Done    |
- |             Make the load file button method             |    Done    |
- |            Make the create task button method            |    Done    |
- |             Make the save file button method             |    Done    |
- |               Make the quit button method                |    Done    |
-
-***Finished***
+### Version 1.0.0
