@@ -21,13 +21,13 @@ public class TaskPanel extends JPanel implements ActionListener {
     private JLabel completion_label;
     JButton delete_button;
 
-    TaskPanel(String title, String description, LocalDate deadline_date) {
+    TaskPanel(String title, String description, LocalDate deadline_date, Boolean completed, LocalDateTime completion_date) {
         this.setBackground(new Color(227, 227, 227));
         this.setLayout(null);
         this.setPreferredSize(new Dimension(400, 160));
         this.creation_date = LocalDateTime.now();
-        this.completed = false;
-        this.completion_date = LocalDateTime.now();
+        this.completed = completed;
+        this.completion_date = completion_date;
         this.deadline_date = deadline_date;
 
         this.title = title;
@@ -38,6 +38,7 @@ public class TaskPanel extends JPanel implements ActionListener {
         this.task_deadline = makeDeadlineLabel(getDateString(deadline_date));
         this.delete_button = makeCloseButton();
         this.completed_box = makeCompletedBox();
+        completed_box.setSelected(completed);
 
         JScrollPane description_scroll = new JScrollPane(task_description);
         description_scroll.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
@@ -46,6 +47,12 @@ public class TaskPanel extends JPanel implements ActionListener {
         description_scroll.setBorder(null);
         description_scroll.setBackground(new Color(227, 227, 227));
         description_scroll.setBounds(10,40,350,80);
+
+        if (completed) {
+            String date_label = getDateString(completion_date);
+            completion_label = makeCompletionLabel(date_label);
+            this.add(completion_label);
+        }
 
         this.add(completed_box);
         this.add(task_deadline);
@@ -152,6 +159,7 @@ public class TaskPanel extends JPanel implements ActionListener {
     }
 
     private void checkCompleteTask(){
+        this.completed = true;
         this.completion_date = LocalDateTime.now();
         String date_label = getDateString(completion_date);
         completion_label = makeCompletionLabel(date_label);
@@ -161,6 +169,7 @@ public class TaskPanel extends JPanel implements ActionListener {
     }
 
     private void uncheckCompleteTask(){
+        this.completed =false;
         this.remove(completion_label);
         this.revalidate();
         this.repaint();

@@ -33,9 +33,8 @@ Each task is composed of :
  |           Learn Java Swing : Make text fields            |    Done    |
  |            Learn Java Swing : Make checkboxes            |    Done    |
  |             Make the load file button method             |    Done    |
- |            Make the create task button method            |    Tak     |
- |             Make the save file button method             |   To Do    |
+ |            Make the create task button method            |    Done    |
+ |             Make the save file button method             |    Done    |
  |               Make the quit button method                |    Done    |
 
-In progress : Added the deadline option to the new task button. New task button finished. 
-Need to add the "Completed" checkbox.
+***Finished***

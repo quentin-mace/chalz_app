@@ -25,6 +25,7 @@ public class GUI extends JFrame implements ActionListener {
     ChalzFrame scene;
     LoadFrame loader;
     NewTaskFrame task_maker;
+    SaveFrame saver;
 
     List<Task> list_of_tasks;
     List<TaskPanel> list_of_task_panels;
@@ -98,7 +99,12 @@ public class GUI extends JFrame implements ActionListener {
         clearDisplayedTasks();
         list_of_task_panels.clear();
         for (int i = 0; i < list_of_tasks.size(); i++) {
-            list_of_task_panels.add(new TaskPanel(list_of_tasks.get(i).title, list_of_tasks.get(i).description, list_of_tasks.get(i).deadline_date));
+            list_of_task_panels.add(new TaskPanel(
+                    list_of_tasks.get(i).title,
+                    list_of_tasks.get(i).description,
+                    list_of_tasks.get(i).deadline_date,
+                    list_of_tasks.get(i).completed,
+                    list_of_tasks.get(i).completion_date));
             list_of_task_panels.get(i).setTaskNumber(i);
             list_of_task_panels.get(i).delete_button.addActionListener(this);
             tasks_panel.add(list_of_task_panels.get(i));
@@ -187,8 +193,26 @@ public class GUI extends JFrame implements ActionListener {
         task_maker.cancel_button.addActionListener(this);
     }
 
+    private void openSaveMenu() throws ClassNotFoundException {
+        scene.setEnabled(false);
+
+        saver = new SaveFrame();
+        saver.addWindowListener(exitFrame);
+        saver.save_button.addActionListener(this);
+        saver.cancel_button.addActionListener(this);
+    }
+
     public void loadSaveFile(String save_name) throws ClassNotFoundException {
         list_of_tasks = new FileHandler().loadFromFile(save_name);
+    }
+
+    public void saveListToFile(){
+        for (int i = 0; i < list_of_tasks.size(); i++) {
+            list_of_tasks.get(i).completed = list_of_task_panels.get(i).completed;
+            list_of_tasks.get(i).completion_date = list_of_task_panels.get(i).completion_date;
+        }
+        new FileHandler().saveToFile(list_of_tasks, saver.save_field.getText());
+        enableScene();
     }
 
     private void setNewTask() {
@@ -247,6 +271,14 @@ public class GUI extends JFrame implements ActionListener {
             System.exit(-1);
         }
 
+        if (e.getSource() == save_button){
+            try {
+                openSaveMenu();
+            } catch (ClassNotFoundException ex) {
+                throw new RuntimeException(ex);
+            }
+        }
+
 
 
         if (this.loader != null && e.getSource() == loader.load_button) {
@@ -275,6 +307,18 @@ public class GUI extends JFrame implements ActionListener {
 
         if (this.task_maker != null && e.getSource() == task_maker.cancel_button) {
             task_maker.dispose();
+            enableScene();
+        }
+
+
+
+        if (this.saver != null && e.getSource() == saver.save_button) {
+            saveListToFile();
+            saver.dispose();
+        }
+
+        if (this.saver != null && e.getSource() == saver.cancel_button) {
+            saver.dispose();
             enableScene();
         }
 
