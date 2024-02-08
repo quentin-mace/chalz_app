@@ -1,3 +1,5 @@
+package main;
+
 import java.awt.*;
 import javax.swing.JScrollPane;
 import javax.swing.SwingUtilities;
@@ -10,7 +12,7 @@ public class WrapLayout extends FlowLayout
 	private Dimension preferredLayoutSize;
 
 	/**
-	* Constructs a new <code>WrapLayout</code> with a left
+	* Constructs a new <code>main.WrapLayout</code> with a left
 	* alignment and a default 5-unit horizontal and vertical gap.
 	*/
 	public WrapLayout()
@@ -22,8 +24,8 @@ public class WrapLayout extends FlowLayout
 	* Constructs a new <code>FlowLayout</code> with the specified
 	* alignment and a default 5-unit horizontal and vertical gap.
 	* The value of the alignment argument must be one of
-	* <code>WrapLayout</code>, <code>WrapLayout</code>,
-	* or <code>WrapLayout</code>.
+	* <code>main.WrapLayout</code>, <code>main.WrapLayout</code>,
+	* or <code>main.WrapLayout</code>.
 	* @param align the alignment value
 	*/
 	public WrapLayout(int align)
@@ -36,8 +38,8 @@ public class WrapLayout extends FlowLayout
 	* and the indicated horizontal and vertical gaps.
 	* <p>
 	* The value of the alignment argument must be one of
-	* <code>WrapLayout</code>, <code>WrapLayout</code>,
-	* or <code>WrapLayout</code>.
+	* <code>main.WrapLayout</code>, <code>main.WrapLayout</code>,
+	* or <code>main.WrapLayout</code>.
 	* @param align the alignment value
 	* @param hgap the horizontal gap between components
 	* @param vgap the vertical gap between components

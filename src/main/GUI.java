@@ -1,6 +1,9 @@
+package main;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.net.URL;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -39,8 +42,11 @@ public class GUI extends JFrame implements ActionListener {
         this.list_of_tasks = list_of_tasks;
         this.list_of_task_panels = new ArrayList<>();
 
-        String local_dir = System.getProperty("user.dir");
-        ImageIcon chalzIcon = new ImageIcon(local_dir + "\\..\\chalzIcon.png");
+        URL icon_url = getClass().getResource("/resources/chalzIcon.png");
+        ImageIcon chalzIcon = new ImageIcon(icon_url);
+
+//        String local_dir = System.getProperty("user.dir");
+//        ImageIcon chalzIcon = new ImageIcon(local_dir + "\\..\\chalzIcon.png");
         Image chalzImage = chalzIcon.getImage();
         Image chalzImageScaled = chalzImage.getScaledInstance(30, 30, SCALE_SMOOTH);
         chalzIcon.setImage(chalzImageScaled);
@@ -118,6 +124,8 @@ public class GUI extends JFrame implements ActionListener {
             tasks_panel.remove(list_of_task_panels.get(i));
         }
     }
+
+
 
     public JButton makeButton(String name, int x, int y, int width, int height) {
         JButton button = new JButton();
@@ -201,6 +209,8 @@ public class GUI extends JFrame implements ActionListener {
         saver.save_button.addActionListener(this);
         saver.cancel_button.addActionListener(this);
     }
+
+
 
     public void loadSaveFile(String save_name) throws ClassNotFoundException {
         list_of_tasks = new FileHandler().loadFromFile(save_name);

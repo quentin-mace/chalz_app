@@ -1,7 +1,10 @@
+package main;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.net.URL;
 import java.time.LocalDateTime;
 
 public class NewTaskFrame extends JFrame implements ActionListener {
@@ -16,8 +19,8 @@ public class NewTaskFrame extends JFrame implements ActionListener {
 
     NewTaskFrame(){
 
-        String local_dir = System.getProperty("user.dir");
-        ImageIcon chalzIcon = new ImageIcon(local_dir + "\\..\\chalzIcon.png");
+        URL icon_url = getClass().getResource("/resources/chalzIcon.png");
+        ImageIcon chalzIcon = new ImageIcon(icon_url);
         LocalDateTime now_time = LocalDateTime.now();
 
         this.setLayout(null);

@@ -1,13 +1,24 @@
+package main;
+
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.net.URL;
+import java.util.List;
 
-public class SaveFrame extends JFrame {
-    JTextField save_field;
-    JButton save_button;
+public class LoadFrame extends JFrame implements ActionListener {
+    String result;
+    JComboBox save_picker;
+    JButton load_button;
     JButton cancel_button;
-    SaveFrame(){
-        String local_dir = System.getProperty("user.dir");
-        ImageIcon chalzIcon = new ImageIcon(local_dir + "\\..\\chalzIcon.png");
+    LoadFrame(){
+        List<String> file_names = new FileHandler().listFilesInFolder();
+        String[] names = new String[file_names.size()];
+        names = file_names.toArray(names);
+
+        URL icon_url = getClass().getResource("/resources/chalzIcon.png");
+        ImageIcon chalzIcon = new ImageIcon(icon_url);
 
         this.setLayout(null);
         this.setSize(250,140);
@@ -18,14 +29,17 @@ public class SaveFrame extends JFrame {
         this.setVisible(true);
         this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
-        JLabel ask_save_name = makeTextLabel("How do you want to call your save ?");
-        save_field = makeTextField("MySave", 10, 40, 200, 20);
-        save_button = makeButton("Save", 10,70,100,20);
+        JLabel ask_save = textLabel("Which save do you want to load ?");
+        save_picker = makeChoiceCombo(names);
+        load_button = makeButton("Load", 10,70,100,20);
         cancel_button = makeButton("Cancel", 120,70,100,20);
 
-        this.add(ask_save_name);
-        this.add(save_field);
-        this.add(save_button);
+
+
+
+        this.add(ask_save);
+        this.add(save_picker);
+        this.add(load_button);
         this.add(cancel_button);
     }
 
@@ -42,7 +56,7 @@ public class SaveFrame extends JFrame {
         return button;
     }
 
-    public JLabel makeTextLabel (String text) {
+    public static JLabel textLabel (String text) {
         JLabel label = new JLabel(text);
         label.setForeground(Color.BLACK);
         label.setFont(new Font("Arial",Font.PLAIN,10));
@@ -52,9 +66,14 @@ public class SaveFrame extends JFrame {
         return label;
     }
 
-    public JTextField makeTextField(String message, int x, int y, int width, int height){
-        JTextField field = new JTextField(message);
-        field.setBounds(x,y,width,height);
-        return field;
+    public static JComboBox makeChoiceCombo(String[] list){
+        JComboBox combo_box = new JComboBox(list);
+        combo_box.setBounds(10, 40, 200, 20);
+        return combo_box;
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+
     }
 }
